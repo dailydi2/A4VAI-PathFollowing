@@ -142,7 +142,8 @@ def NDO_for_Ai_cmd(T_cmd, mass, grav, QR_cI_B, QR_gain_NDO, QR_z_NDO, QR_Vi, QR_
     # Aqi_thru_wo_grav for NDO
     Ab_thrust   =   np.array([0., 0., -T_cmd/mass])            # ?? thrust ??
     Ai_thrust   =   np.matmul(np.transpose(QR_cI_B), Ab_thrust)     # ?? ??
-    
+    Ai_rotor_drag = Ai_rotor_drag * 0.0
+
     # nonlinear disturbance observer
     dz_NDO      =   np.zeros(3)
     dz_NDO[0]   =   -QR_gain_NDO[0]*QR_z_NDO[0] - QR_gain_NDO[0] * (QR_gain_NDO[0]*QR_Vi[0] + Ai_thrust[0] + Ai_rotor_drag[0])

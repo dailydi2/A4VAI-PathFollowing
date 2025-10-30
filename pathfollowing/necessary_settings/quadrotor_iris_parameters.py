@@ -207,41 +207,34 @@ class Physical_Parameter():
     
     #.. >>>>>  set_values  <<<<<
     def set_values(self):
-        # PX4 specs (iris) in [1]
-        timeConstantUp              =   0.0125
-        timeConstantDown            =   0.025
-        maxRotVelocity              =   1100
-        maxRotVelocity_limitied     =   956.5   # max 2200 but actual 2000 in [8]
-        motorConstant               =   5.84e-06
-        momentConstant              =   0.06
-        rotorDragCoefficient        =   0.000175
-        rollingMomentCoefficient    =   1e-06        
-        d                           =   0.4
-        g                           =   9.81
-        
-        #.. physical model: iris in [1]
-        self.Ixx            =   0.029125     
-        self.Iyy            =   0.029125
-        self.Izz            =   0.055225
-        self.inertia        =   np.diag( [ self.Ixx,   self.Iyy,   self.Izz ] )  
-        self.mass           =   1.535 * 1.32#1.285 # 241223 diy
-        self.tau_throttle   =   0.5 * (timeConstantUp + timeConstantDown)
-        # self.Lx_M           =   (d / m.sqrt(2))
-        # self.Ly_M           =   (d / m.sqrt(2))
-        self.Lx_M           =   0.13
-        self.Ly_M           =   0.21
-        self.Lz_M           =   0.023
+        grav                            =   9.81
 
+        # Octocopter spec from sdf file
+        maxRotVelocity                  =   885
+        motorConstant                   =   1.5e-4
+        momentConstant                  =   0.05
+        rotorDragCoefficient            =   0.000607
+        rollingMomentCoefficient        =   1e-06        
+        self.mass                       =   10.4
+        self.n_Motor                    =   8       
+
+        # PX4 specs (iris) in [1]
+        # maxRotVelocity                  =   1100
+        # motorConstant                   =   5.84e-06
+        # momentConstant                  =   0.06
+        # rotorDragCoefficient            =   0.000175
+        # rollingMomentCoefficient        =   1e-06   
+        # self.mass                       =   1.535 * 1.32
+        # self.n_Motor                    =   4
+        
         # hover throtle level
-        self.n_Motor                    =   4
-        self.T_hover                    =   self.mass * g      
+        self.T_hover                    =   self.mass * grav      
         self.motorConstant              =   motorConstant
         self.momentConstant             =   momentConstant
         self.maxRotVel                  =   maxRotVelocity
         self.T_max_M                    =   self.motorConstant * self.maxRotVel**2
         self.T_max                      =   self.T_max_M * self.n_Motor
         self.throttle_hover             =   m.sqrt(self.T_hover / self.T_max)
-        self.rotor_turning_direction    =   np.array([-1., 1., -1., 1]) # CW(1) and CCW(-1) w.r.t. rotor axis(-z_B)
         
         # motor coefficient
         self.Kq_Motor                   =   self.motorConstant/self.T_max_M
@@ -250,50 +243,14 @@ class Physical_Parameter():
         self.rollingMomentCoefficient   =   rollingMomentCoefficient
         
         # simple - psuedo rotor drag coeff.        
-        simple_motor_rot_vel_sum     = 4 * self.maxRotVel * self.throttle_hover
+        simple_motor_rot_vel_sum     = self.n_Motor * self.maxRotVel * self.throttle_hover
         self.psuedo_rotor_drag_coeff = simple_motor_rot_vel_sum * self.rotorDragCoefficient
         
-        # collocation matrix
-        self.eta_Fb, self.eta_Mb = self.eta_Xshape_quadrotors(self.T_max_M, self.Lx_M, self.Ly_M, self.Kq_Motor, self.Kt_Motor)
-        self.Mat_CA = self.mat_CA_quadrotors(self.eta_Fb, self.eta_Mb)
-    
-        # rotor drag coefficient is: = D / (? * ? * R² * (? * R)²) in [5]
-        
         # aerodynamic
-        # self.CdA            =   0.107 * 4 * 10.       # 0.107
         self.CdA            =   0.
         self.ClA            =   0.          # small enough to ignore, compared to the Cd
         self.delXcp         =   0.
         pass
-    
-    #..calculate a matrix(eta) of rotors for quatdrotors
-    # https://www.cantorsparadise.com/how-control-allocation-for-multirotor-systems-works-f87aff1794a2
-    def eta_Xshape_quadrotors(self, max_thrust_per_rotor, Lx_M, Ly_M, Kq_Motor, Kt_Motor):
-        # Throttle to Force and Moment Matrix For Quadrotor
-        eta_Fb 	        =  - max_thrust_per_rotor * np.ones(4)
-        eta_Mb        	=   np.zeros( (3, 4) )
-        
-        # Rolling & Ritching Effects, X-shape rotors
-        eta_Mb[:,0]     =   np.cross( [  Lx_M,     Ly_M,   0 ], [ 0.0,   0.0,   eta_Fb[0]  ] )
-        eta_Mb[:,1]   	=   np.cross( [  Lx_M,    -Ly_M,   0 ], [ 0.0,   0.0,   eta_Fb[1]  ] )
-        eta_Mb[:,2]   	=   np.cross( [ -Lx_M,    -Ly_M,   0 ], [ 0.0,   0.0,   eta_Fb[2]  ] )
-        eta_Mb[:,3]    	=   np.cross( [ -Lx_M,     Ly_M,   0 ], [ 0.0,   0.0,   eta_Fb[3]  ] )
-        
-        # Yawing Effects, ?? ? 3?? ?? ?? 0? ??? ?? ?? ???.
-        eta_Mb[2,0]  	=   -(Kq_Motor / Kt_Motor) * eta_Fb[0]
-        eta_Mb[2,1]    	=    (Kq_Motor / Kt_Motor) * eta_Fb[1]
-        eta_Mb[2,2]  	=   -(Kq_Motor / Kt_Motor) * eta_Fb[2]
-        eta_Mb[2,3]  	=    (Kq_Motor / Kt_Motor) * eta_Fb[3]
-        
-        return eta_Fb, eta_Mb
-
-    #..calculate command allocation matrix of rotors for quatdrotors
-    def mat_CA_quadrotors(self, eta_Fb, eta_Mb):
-        eta_Mat         =   np.vstack( [eta_Fb, eta_Mb] )
-        W_Mat           =   np.diag( 1.0 * np.ones(4) )
-        inv_W_Mat       =   np.linalg.inv( W_Mat )
-        Mat_CA          =	np.matmul( inv_W_Mat, np.linalg.pinv( np.matmul(eta_Mat, inv_W_Mat) ) )
-        return Mat_CA
     
     pass
 

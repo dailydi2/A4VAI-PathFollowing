@@ -176,6 +176,34 @@ class Waypoint():
             self.WPs = np.concatenate([start_point, self.WPs, start_point])
             pass
         
+        elif wp_type_selection == 9:
+            d1      =   15
+            d2      =   25
+            d3      =   75
+            h       =   5.
+
+            self.WPs = np.array([
+                [  0,      0,   -h],
+                [  0,     d3,   -h],
+                [ -d1,    d3,   -h],
+                [ -d1,   -d2,   -h],
+                [ -2*d1, -d2,   -h],
+                [ -2*d1,  d3,   -h],
+                [ -3*d1,  d3,   -h],
+                [ -3*d1, -d2,   -h],
+                [ -4*d1, -d2,   -h],
+                [ -4*d1,  d3,   -h],
+                [ -5*d1,  d3,   -h],
+                [ -5*d1, -d2,   -h],
+                [ -6*d1, -d2,   -h],
+                [ -6*d1,  d3,   -h],
+                [ -7*d1,  d3,   -h],
+                [ -7*d1, -d2,   -h],
+                [ -8*d1, -d2,   -h],
+                [ -8*d1,  d3,   -h],
+                [ -9*d1,  d3,   -h],
+                [ -9*d1, -d2,   -h],])
+
         else:
         # straight line
             self.WPs     =   np.array([ [0, 0, -10], [-10, 10, -10] ])
