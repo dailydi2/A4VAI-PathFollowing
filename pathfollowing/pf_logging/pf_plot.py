@@ -36,8 +36,8 @@ print(f"[INFO] Loaded columns: {list(df.columns)}")
 t = df["time"].to_numpy() if "time" in df.columns else np.arange(len(df))
 
 # === Create a single figure with multiple subplots ===
-fig, axs = plt.subplots(4, 2, figsize=(12, 10))
-fig.suptitle("Pathfollowing Log Summary", fontsize=14, fontweight="bold")
+fig, axs = plt.subplots(3, 2, figsize=(10, 10))
+# fig.suptitle("Pathfollowing Log Summary", fontsize=14, fontweight="bold")
 
 # ---- (1) XY trajectory ----
 ax = axs[0, 0]
@@ -53,20 +53,21 @@ ax.grid(True)
 ax = axs[0, 1]
 if "pos_z" in df.columns:
     ax.plot(t, -df["pos_z"], color='tab:orange')
-ax.set_title("pos_z vs time")
+ax.set_title("Altitude")
 ax.set_xlabel("time [s]")
 ax.set_ylabel("pos_z [m]")
 ax.grid(True)
 
 # ---- (3) Speed and velocity components ----
 ax = axs[1, 0]
-if {"vel_x", "vel_y", "vel_z"}.issubset(df.columns):
+if {"vel_x", "vel_y", "vel_z","des_spd"}.issubset(df.columns):
     speed = np.sqrt(df["vel_x"]**2 + df["vel_y"]**2 + df["vel_z"]**2)
     ax.plot(t, df["vel_x"], label="vel_x", color="tab:blue", alpha=0.7)
     ax.plot(t, df["vel_y"], label="vel_y", color="tab:orange", alpha=0.7)
     ax.plot(t, df["vel_z"], label="vel_z", color="tab:green", alpha=0.7)
     ax.plot(t, speed, label="|v|", color="black", linewidth=1.5)
-ax.set_title("Velocity Components and Magnitude")
+    ax.plot(t, df["des_spd"], label="des_|v|", color="tab:red", alpha=0.5)
+ax.set_title("Velocity and Speed")
 ax.set_xlabel("time [s]")
 ax.set_ylabel("velocity [m/s]")
 ax.legend()
@@ -76,54 +77,79 @@ ax.grid(True)
 ax = axs[1, 1]
 for col, label in [("eul_roll", "roll"), ("eul_pitch", "pitch"), ("eul_yaw", "yaw")]:
     if col in df.columns:
-        ax.plot(t, df[col], label=label)
-ax.set_title("Euler angles")
+        ang = np.degrees(np.unwrap(df[col].to_numpy()))
+        ax.plot(t, ang, label=label)
+
+ax.set_title("Euler Angles (Unwrapped)")
 ax.set_xlabel("time [s]")
-ax.set_ylabel("angle [rad]")
+ax.set_ylabel("angle [deg]")
 ax.legend()
 ax.grid(True)
 
-# ---- (5) Errors ----
+
+# ---- (5) Cross Tracking Error + Velocity Error ----
 ax = axs[2, 0]
-for col, label in [("cross-tracking_err", "ct_err")]:
-    if col in df.columns:
-        ax.plot(t, df[col], label=label)
-ax.set_title("Cross Tracking Error")
+
+ax.set_title("Cross Tracking & Velocity Error")
 ax.set_xlabel("time [s]")
 ax.set_ylabel("error")
-ax.legend()
 ax.grid(True)
 
-# ---- (6) Errors ----
+# Cross tracking error
+if "cross-tracking_err" in df.columns:
+    y_ct = df["cross-tracking_err"].replace(9999, np.nan)
+    ax.plot(t, y_ct, label="cross-track err[m]", color='tab:blue')
+
+# Velocity error
+if "vel_err" in df.columns:
+    ax.plot(t, df["vel_err"], label="velocity err[m/s]", color='tab:orange')
+
+ax.legend()
+
+# ---- (6) MPPI result ----
 ax = axs[2, 1]
-for col, label in [("vel_err", "vel_err")]:
+for col, label in [("u_0", "Ax_cmd"), ("u_1", "guid_gain")]:
     if col in df.columns:
         ax.plot(t, df[col], label=label)
-ax.set_title("Velocity Error")
-ax.set_xlabel("time [s]")
-ax.set_ylabel("error")
-ax.legend()
-ax.grid(True)
-
-# ---- (7) MPPI computation time ----
-ax = axs[3, 0]
-if "MPPI_time" in df.columns:
-    ax.plot(t, df["MPPI_time"], color='tab:red')
-ax.set_title("MPPI compute time")
-ax.set_xlabel("time [s]")
-ax.set_ylabel("sec")
-ax.grid(True)
-
-# ---- (8) Eta ----
-ax = axs[3, 1]
-for col, label in [("u_0", "u_0"), ("u_1", "u_1")]:
-    if col in df.columns:
-        ax.plot(t, df[col], label=label)
-ax.set_title("Control Input")
+ax.set_title("Control Input from MPPI")
 ax.set_xlabel("time [s]")
 ax.set_ylabel("u")
 ax.legend()
 ax.grid(True)
+
+# ---- (8) MPPI computation time ----
+# ax = axs[3, 0]
+# if "MPPI_time" in df.columns:
+#     ax.plot(t, df["MPPI_time"], color='tab:red')
+# ax.set_title("MPPI compute time")
+# ax.set_xlabel("time [s]")
+# ax.set_ylabel("sec")
+# ax.grid(True)
+
+# ax = axs[3, 1]
+
+if "MPPI_time" in df.columns:
+    mean_time = df["MPPI_time"].mean()
+    std_time  = df["MPPI_time"].std() 
+    text = f"Average MPPI compute time:\n{mean_time:.4f} ± {std_time:.4f} s"
+    print(text)  
+else:
+    text = "No MPPI_time data"
+
+# ax.text(0.5, 0.5, text,
+#         ha='center', va='center',
+#         transform=ax.transAxes,
+#         fontsize=12, fontweight='bold')
+
+# ax.set_xticks([])
+# ax.set_yticks([])
+# ax.set_xlabel("") 
+# ax.set_ylabel("")
+# ax.set_title("MPPI compute time")
+# # for spine in ax.spines.values():
+# #     spine.set_visible(False)
+
+# ax.grid(False) 
 
 # === Layout adjustment ===
 plt.tight_layout(rect=[0, 0, 1, 0.97])  # leave space for main title
