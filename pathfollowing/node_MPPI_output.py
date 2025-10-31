@@ -159,7 +159,7 @@ class Node_MPPI_Output(Node):
     
         if self.MPPI_input_int_Q6_received == True and self.MPPI_input_dbl_WP_received == True and self.MPPI_setting_complete == False:
             
-            self.MG  = MPPI_guidance.MPPI_Guidance_Modules(self.QR.MPPI_param)
+            self.MG  = MPPI_guidance.MPPI_Guidance_Modules(self.QR.MPPI_param, self.QR, self.WP.WPs)
             
             self.MG.set_total_MPPI_code(self.WP.WPs.shape[0])
             
