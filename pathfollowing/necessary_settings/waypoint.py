@@ -57,7 +57,7 @@ class Waypoint():
         #.. rectangle
         elif wp_type_selection == 2:
             # d       =   35
-            d       =   100
+            d       =   40
             wp0     =   5.
             h1      =   10.
             h2      =   10.
