@@ -49,7 +49,7 @@ class Waypoint():
             self.WPs[:,2]   =   -h            
         #.. straight line
         elif wp_type_selection == 1:
-            d       =   50.
+            d       =   20.
             h1      =   10.
             wp0     =   5.
             self.WPs     =   np.array([ [0, 0, -h1], [-wp0, 0., -h1], [-d+wp0, 0., -h1], [-d, 0., -h1] ])
