@@ -108,7 +108,7 @@ ax.legend()
 
 # ---- (6) MPPI result ----
 ax = axs[2, 1]
-for col, label in [("u_0", "Ax_cmd"), ("u_1", "guid_gain")]:
+for col, label in [("u_0", "Ax_cmd"), ("u_1", "guid_gain"), ("T_norm", "T_norm")]:
     if col in df.columns:
         ax.plot(t, df[col], label=label)
 ax.set_title("Control Input from MPPI")
@@ -128,13 +128,13 @@ ax.grid(True)
 
 # ax = axs[3, 1]
 
-if "MPPI_time" in df.columns:
-    mean_time = df["MPPI_time"].mean()
-    std_time  = df["MPPI_time"].std() 
-    text = f"Average MPPI compute time:\n{mean_time:.4f} ± {std_time:.4f} s"
-    print(text)  
-else:
-    text = "No MPPI_time data"
+# if "MPPI_time" in df.columns:
+#     mean_time = df["MPPI_time"].mean()
+#     std_time  = df["MPPI_time"].std() 
+#     text = f"Average MPPI compute time:\n{mean_time:.4f} ± {std_time:.4f} s"
+#     print(text)  
+# else:
+#     text = "No MPPI_time data"
 
 # ax.text(0.5, 0.5, text,
 #         ha='center', va='center',
@@ -150,6 +150,7 @@ else:
 # #     spine.set_visible(False)
 
 # ax.grid(False) 
+
 
 # === Layout adjustment ===
 plt.tight_layout(rect=[0, 0, 1, 0.97])  # leave space for main title

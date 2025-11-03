@@ -62,7 +62,7 @@ class Waypoint():
             h1      =   10.
             h2      =   10.
             self.WPs     =   np.array([ [0, 0, -h1],
-                                [wp0, wp0, -h1], [wp0 + d, wp0, -h2], [wp0 + d, wp0 - d, -h1], [wp0, wp0 - d, -h2], [wp0, wp0, -h1],
+                                [-wp0, -wp0, -h1], [-wp0 - d, -wp0, -h2], [-wp0 - d, -wp0 + d, -h1], [-wp0, -wp0 + d, -h2], [-wp0, -wp0, -h1],
                                  [0, 0, -h1]])            
         #.. zigzag
         elif wp_type_selection == 3:

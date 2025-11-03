@@ -23,10 +23,11 @@ class Logger:
                 "cross-tracking_err", "vel_err",
                 "des_spd",
                 "att_cmd_r", "att_cmd_p", "att_cmd_y", 
+                "T_norm"
                 # "traj_x", "traj_y", "traj_z",
             ])
 
-    def update(self, t, pos, vel, eul, gain, cal_t, ct_err, vel_err, des_spd, att_cmd):
+    def update(self, t, pos, vel, eul, gain, cal_t, ct_err, vel_err, des_spd, att_cmd, T_norm):
         with open(self.filename, 'a', newline='') as f:
             writer = csv.writer(f)
             writer.writerow([
@@ -38,6 +39,7 @@ class Logger:
                 cal_t,
                 ct_err, vel_err, des_spd,
                 att_cmd[0], att_cmd[1], att_cmd[2],
+                T_norm,
                 # traj[0], traj[1], traj[2],
 
             ])

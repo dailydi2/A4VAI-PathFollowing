@@ -486,7 +486,7 @@ class NodeAttCtrl(Node):
                           self.QR.guid_var.MPPI_ctrl_input[0:2], 
                           self.veh_att_set.MPPI_cal_time,
                           self.QR.PF_var.dist_to_path, vel_err, self.QR.GnC_param.desired_speed,
-                          self.QR.guid_var.att_ang_cmd)
+                          self.QR.guid_var.att_ang_cmd , self.QR.guid_var.norm_T_cmd )
 
         else:
             pass

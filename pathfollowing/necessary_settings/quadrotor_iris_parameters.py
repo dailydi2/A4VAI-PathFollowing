@@ -173,7 +173,7 @@ class GnC_Parameter():
         self.tau_phi    =   0.48
         self.tau_the    =   self.tau_phi
         self.tau_psi    =   self.tau_phi * 2.
-        self.del_psi_cmd_limit = 20. * m.pi/180.
+        self.del_psi_cmd_limit = 15. * m.pi/180.
                 
         self.tau_Wb     =   0.05 # in [https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/154099/eth-7387-01.pdf]
 
@@ -292,7 +292,7 @@ class Physical_Parameter():
         self.rollingMomentCoefficient   =   rollingMomentCoefficient
         
         # simple - psuedo rotor drag coeff.        
-        simple_motor_rot_vel_sum     = 4 * self.maxRotVel * self.throttle_hover
+        simple_motor_rot_vel_sum     = 8 * self.maxRotVel * self.throttle_hover
         self.psuedo_rotor_drag_coeff = simple_motor_rot_vel_sum * self.rotorDragCoefficient
         
         # collocation matrix

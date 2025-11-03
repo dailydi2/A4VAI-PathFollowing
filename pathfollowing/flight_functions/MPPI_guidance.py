@@ -302,7 +302,7 @@ class MPPI_Guidance_Modules():
             //.. set others
             double env_var_grav                          = 9.81;
             double Ai_grav[3]                            = {0., 0., env_var_grav};
-            double physical_param_T_max                  = physical_param_mass * env_var_grav / physical_param_throttle_hover; 
+            double physical_param_T_max                  = physical_param_mass * env_var_grav / (physical_param_throttle_hover * physical_param_throttle_hover);
             double PF_var_point_closest_on_path_i[3]     = {0.,};
             double PF_var_dist_to_path                   = 0.;
             double PF_var_VT_Ri[3]                       = {0.,};
@@ -820,9 +820,11 @@ class MPPI_Guidance_Modules():
             double euler_psi[3] = {0., 0., psi_des};
             double mat_psi[3][3]; DCM_from_euler_angle(euler_psi, mat_psi);
             double Apsi_cmd[3]; matmul_(mat_psi , Ai_cmd, Apsi_cmd);
-            att_ang_cmd[0] = min(max(asin(Apsi_cmd[1]/mag_Ai_cmd), -0.5236), 0.5236);
+
+            const double MAX_TILT = 15.0 * M_PI / 180.0;
+            att_ang_cmd[0] = min(max(asin(Apsi_cmd[1]/mag_Ai_cmd), -MAX_TILT), MAX_TILT);
             double sintheta = fmin(fmax(-Apsi_cmd[0]/cos(att_ang_cmd[0])/mag_Ai_cmd, -1.0), 1.0);
-            att_ang_cmd[1] = min(max(asin(sintheta),-0.5236),0.5236);
+            att_ang_cmd[1] = min(max(asin(sintheta),-MAX_TILT),MAX_TILT);
             att_ang_cmd[2] = psi_des;
         }
         __device__ void controller__attitude_controller(\
