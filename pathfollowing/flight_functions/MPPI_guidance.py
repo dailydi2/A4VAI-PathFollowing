@@ -821,7 +821,7 @@ class MPPI_Guidance_Modules():
             double mat_psi[3][3]; DCM_from_euler_angle(euler_psi, mat_psi);
             double Apsi_cmd[3]; matmul_(mat_psi , Ai_cmd, Apsi_cmd);
 
-            const double MAX_TILT = 15.0 * M_PI / 180.0;
+            const double MAX_TILT = 20.0 * M_PI / 180.0;
             att_ang_cmd[0] = min(max(asin(Apsi_cmd[1]/mag_Ai_cmd), -MAX_TILT), MAX_TILT);
             double sintheta = fmin(fmax(-Apsi_cmd[0]/cos(att_ang_cmd[0])/mag_Ai_cmd, -1.0), 1.0);
             att_ang_cmd[1] = min(max(asin(sintheta),-MAX_TILT),MAX_TILT);

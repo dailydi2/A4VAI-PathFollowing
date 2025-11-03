@@ -28,7 +28,7 @@ class MPPI_Parameter():
         
         self.dt_MPPI            =   0.05
         self.K                  =   256 * 2
-        self.N                  =   100
+        self.N                  =   50
 
         # cost-related        
         self.cost_min_V_aligned =   0.3    
@@ -38,8 +38,8 @@ class MPPI_Parameter():
             self.Q                =   W * np.array([1.0, 1.0, 1.0])
             self.R                =   W * np.array([0.5, 0.5, 0.5]) * 0.1     # R? MPPI input ?? ??? ??? ? ?? ?? **-??240827-**
             self.P                =   W * np.array([0.5, 0.5, 0.5])
-            self.var0             =   1.0 * 0.7
-            self.var1             =   1.0 * 0.7
+            self.var0             =   0.3 * 1.0 * 0.7
+            self.var1             =   0.3 * 1.0 * 0.7
             self.beta             =   self.R[0]*self.var0*self.var0
             self.gamma            =   self.beta
             self.u0_init          =   0.5
@@ -49,8 +49,8 @@ class MPPI_Parameter():
             W                     =   5.
             self.Q                =   W * np.array([15.0, 10.0, 1.0]) # dist2path, v, ang
             self.P                =   W * np.array([0.0, 10, 1.])
-            self.var0             =   0.01 / np.sqrt(self.dt_MPPI)
-            self.var1             =   0.02 / np.sqrt(self.dt_MPPI)
+            self.var0             =   0.3 * 0.01 / np.sqrt(self.dt_MPPI)
+            self.var1             =   0.3 * 0.02 / np.sqrt(self.dt_MPPI)
             self.beta             =   1e-1
             self.gamma            =   1e-2 * 0.5
             self.R                =   np.array([1., 1., 0.])
@@ -154,7 +154,7 @@ class GnC_Parameter():
         self.dt_GCU                    =   0.004
         self.Guid_type                 =   Guid_type       # | 0: Ctrl-based | 1: GL-based | 2: Direct | 3: GL-based-MPPI | 4: Ctrl-based MPPI | 9: test
         self.desired_speed             =   2.
-        self.virtual_target_distance   =   3
+        self.virtual_target_distance   =   5
         self.distance_change_WP        =   self.virtual_target_distance #* 1.5
         
         #.. param. of Guid_tpye = 0
@@ -170,21 +170,21 @@ class GnC_Parameter():
         self.gain_NDO   =   5.0 * np.array([1.0,1.0,1.0])
 
         #.. attitude control parameter
-        self.tau_phi    =   0.48
+        self.tau_phi    =   0.3
         self.tau_the    =   self.tau_phi
-        self.tau_psi    =   self.tau_phi * 2.
-        self.del_psi_cmd_limit = 15. * m.pi/180.
+        self.tau_psi    =   self.tau_phi * 3.
+        self.del_psi_cmd_limit = 20. * m.pi/180.
                 
         self.tau_Wb     =   0.05 # in [https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/154099/eth-7387-01.pdf]
 
         #.. rate control parameter
-        self.tau_p      =   0.16
-        self.tau_q      =   0.16
-        self.tau_r      =   0.31
+        self.tau_p      =   0.1
+        self.tau_q      =   0.1
+        self.tau_r      =   0.2
 
-        self.alpha_p    =   0.16
-        self.alpha_q    =   0.16  
-        self.alpha_r    =   0.16 
+        self.alpha_p    =   0.1
+        self.alpha_q    =   0.1
+        self.alpha_r    =   0.1
         pass
     
     pass
