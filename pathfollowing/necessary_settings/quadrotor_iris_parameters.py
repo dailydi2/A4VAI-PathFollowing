@@ -170,20 +170,21 @@ class GnC_Parameter():
         self.gain_NDO   =   5.0 * np.array([1.0,1.0,1.0])
 
         #.. attitude control parameter
-        self.tau_phi    =   0.3
+        self.tau_phi    =   0.48
         self.tau_the    =   self.tau_phi
         self.tau_psi    =   self.tau_phi * 2.
         self.del_psi_cmd_limit = 20. * m.pi/180.
                 
         self.tau_Wb     =   0.05 # in [https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/154099/eth-7387-01.pdf]
 
-        self.tau_p      =   0.1
-        self.tau_q      =   0.1
-        self.tau_r      =   0.2
+        #.. rate control parameter
+        self.tau_p      =   0.16
+        self.tau_q      =   0.16
+        self.tau_r      =   0.31
 
-        self.alpha_p    =   0.1  
-        self.alpha_q    =   0.1   
-        self.alpha_r    =   0.1  
+        self.alpha_p    =   0.16
+        self.alpha_q    =   0.16  
+        self.alpha_r    =   0.16 
         pass
     
     pass
