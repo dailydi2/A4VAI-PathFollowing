@@ -481,7 +481,7 @@ class NodeAttCtrl(Node):
             #     pass
 
             vel_tot = np.linalg.norm(self.est_state.vel_NED)
-            vel_err = self.QR.GnC_param.desired_speed - vel_tot
+            vel_err = abs(self.QR.GnC_param.desired_speed - vel_tot)
             logger.update(self.sim_time, self.est_state.pos_NED, self.est_state.vel_NED, self.est_state.eul_ang_rad,
                           self.QR.guid_var.MPPI_ctrl_input[0:2], 
                           self.veh_att_set.MPPI_cal_time,

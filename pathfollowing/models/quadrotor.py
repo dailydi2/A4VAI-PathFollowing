@@ -96,7 +96,7 @@ class Quadrotor_6DOF():
         # calc. simple rotor drag model
         Fi_drag = guidance_path_following.simple_rotor_drag_model(
             self.state_var.Vi, self.physical_param.psuedo_rotor_drag_coeff, self.state_var.cI_B)
-        self.guid_var.Ai_rotor_drag = Fi_drag / self.physical_param.mass
+        self.guid_var.Ai_rotor_drag = 0.0*Fi_drag / self.physical_param.mass
         # compensate disturbance
         self.guid_var.Ai_disturbance = self.guid_var.out_NDO + self.guid_var.Ai_rotor_drag
         self.guid_var.Ai_cmd_compensated = self.guid_var.Ai_cmd - self.guid_var.Ai_disturbance

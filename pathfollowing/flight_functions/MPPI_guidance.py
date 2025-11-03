@@ -385,7 +385,7 @@ class MPPI_Guidance_Modules():
 
                 // calc. simple rotor drag model
                 guidance_path_following__simple_rotor_drag_model(state_var_Vi, physical_param_psuedo_rotor_drag_coeff, cB_I, Fi_drag);
-                for(int i=0;i<3;i++) guid_var_Ai_rotor_drag[i] = Fi_drag[i]/physical_param_mass;
+                for(int i=0;i<3;i++) guid_var_Ai_rotor_drag[i] = Fi_drag[i]/physical_param_mass*0.0;
                 // compensate disturbance
                 for(int i=0;i<3;i++) guid_var_Ai_disturbance[i]     = Ai_disturbance[i] + guid_var_Ai_rotor_drag[i];
                 for(int i=0;i<3;i++) guid_var_Ai_cmd_compensated[i] = guid_var_Ai_cmd[i] - guid_var_Ai_disturbance[i];
@@ -822,7 +822,7 @@ class MPPI_Guidance_Modules():
             double Apsi_cmd[3]; matmul_(mat_psi , Ai_cmd, Apsi_cmd);
             att_ang_cmd[0] = min(max(asin(Apsi_cmd[1]/mag_Ai_cmd), -0.5236), 0.5236);
             double sintheta = fmin(fmax(-Apsi_cmd[0]/cos(att_ang_cmd[0])/mag_Ai_cmd, -1.0), 1.0);
-            att_ang_cmd[1] = asin(sintheta);
+            att_ang_cmd[1] = min(max(asin(sintheta),-0.5236),0.5236);
             att_ang_cmd[2] = psi_des;
         }
         __device__ void controller__attitude_controller(\

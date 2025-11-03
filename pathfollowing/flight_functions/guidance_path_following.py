@@ -131,7 +131,7 @@ def convert_Ai_cmd_to_thrust_and_att_ang_cmd(cI_B, Ai_cmd, mass, T_max, WP_WPs, 
     Apsi_cmd    =   np.matmul(mat_psi , Ai_cmd)
     phi         =   min(max(m.asin(Apsi_cmd[1]/mag_Ai_cmd), -0.5236), 0.5236)
     sintheta    =   min(max(-Apsi_cmd[0]/m.cos(phi)/mag_Ai_cmd, -1.0), 1.0)
-    theta = min(max(m.asin(sintheta),-0.5236),0.5236)
+    theta       =  min(max(m.asin(sintheta),-0.5236),0.5236)
     psi         =   psi_des
             
     att_ang_cmd = np.array([phi, theta, psi])
@@ -142,6 +142,7 @@ def NDO_for_Ai_cmd(T_cmd, mass, grav, QR_cI_B, QR_gain_NDO, QR_z_NDO, QR_Vi, QR_
     # Aqi_thru_wo_grav for NDO
     Ab_thrust   =   np.array([0., 0., -T_cmd/mass])            # ?? thrust ??
     Ai_thrust   =   np.matmul(np.transpose(QR_cI_B), Ab_thrust)     # ?? ??
+    Ai_rotor_drag = Ai_rotor_drag * 0.0
     
     # nonlinear disturbance observer
     dz_NDO      =   np.zeros(3)
