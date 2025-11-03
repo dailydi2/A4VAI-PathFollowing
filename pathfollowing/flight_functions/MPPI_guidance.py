@@ -821,7 +821,7 @@ class MPPI_Guidance_Modules():
             double mat_psi[3][3]; DCM_from_euler_angle(euler_psi, mat_psi);
             double Apsi_cmd[3]; matmul_(mat_psi , Ai_cmd, Apsi_cmd);
             att_ang_cmd[0] = min(max(asin(Apsi_cmd[1]/mag_Ai_cmd), -0.5236), 0.5236);
-            double sintheta = min(max(-Apsi_cmd[0]/cos(att_ang_cmd[0])/mag_Ai_cmd, -0.5236), 0.5236);
+            double sintheta = fmin(fmax(-Apsi_cmd[0]/cos(att_ang_cmd[0])/mag_Ai_cmd, -1.0), 1.0);
             att_ang_cmd[1] = asin(sintheta);
             att_ang_cmd[2] = psi_des;
         }

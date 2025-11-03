@@ -45,7 +45,7 @@ class NodeAttCtrl(Node):
 
         #.. simulation settings
         self.guid_type_case      =   4       # | 0: Pos. Ctrl     | 3: MPPI-GL (original cost)    | 4: MPPI-GL (cruise speed control)
-        self.wp_type_selection   =   1       # | 0: path planning solution | 1: straight line | 2: rectangle | 3: zigzag  | 4: circle  
+        self.wp_type_selection   =   2       # | 0: path planning solution | 1: straight line | 2: rectangle | 3: zigzag  | 4: circle  
                                              # | 5: figure-8  | 6: Alt change  | 7: Spiral  | 8: Lissajous curve (figure 8)
         
         #.. model settings

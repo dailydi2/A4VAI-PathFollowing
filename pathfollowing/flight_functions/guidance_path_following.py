@@ -130,7 +130,7 @@ def convert_Ai_cmd_to_thrust_and_att_ang_cmd(cI_B, Ai_cmd, mass, T_max, WP_WPs, 
     mat_psi     =   DCM_from_euler_angle(euler_psi)
     Apsi_cmd    =   np.matmul(mat_psi , Ai_cmd)
     phi         =   min(max(m.asin(Apsi_cmd[1]/mag_Ai_cmd), -0.5236), 0.5236)
-    sintheta    =   min(max(-Apsi_cmd[0]/m.cos(phi)/mag_Ai_cmd, -0.5236), 0.5236)
+    sintheta    =   min(max(-Apsi_cmd[0]/m.cos(phi)/mag_Ai_cmd, -1.0), 1.0)
     theta       =   m.asin(sintheta)
     psi         =   psi_des
             

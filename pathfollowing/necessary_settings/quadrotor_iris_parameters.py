@@ -153,8 +153,8 @@ class GnC_Parameter():
         #.. PF guidance
         self.dt_GCU                    =   0.004
         self.Guid_type                 =   Guid_type       # | 0: Ctrl-based | 1: GL-based | 2: Direct | 3: GL-based-MPPI | 4: Ctrl-based MPPI | 9: test
-        self.desired_speed             =   3.
-        self.virtual_target_distance   =   4.5
+        self.desired_speed             =   2.
+        self.virtual_target_distance   =   3
         self.distance_change_WP        =   self.virtual_target_distance #* 1.5
         
         #.. param. of Guid_tpye = 0
