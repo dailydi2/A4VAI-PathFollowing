@@ -173,7 +173,7 @@ class GnC_Parameter():
         self.tau_phi    =   0.3
         self.tau_the    =   self.tau_phi
         self.tau_psi    =   self.tau_phi * 2
-        self.del_psi_cmd_limit = 10. * m.pi/180.
+        self.del_psi_cmd_limit = 20. * m.pi/180.
                 
         self.tau_Wb     =   0.05 # in [https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/154099/eth-7387-01.pdf]
 
