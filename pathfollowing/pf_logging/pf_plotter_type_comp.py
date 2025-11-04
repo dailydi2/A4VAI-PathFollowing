@@ -168,6 +168,15 @@ ax.legend()
 ax.grid(True)
 
 
+if "MPPI_time" in df.columns:
+    mean_time = df["MPPI_time"].mean()
+    std_time  = df["MPPI_time"].std() 
+    text = f"Average MPPI compute time:\n{mean_time:.4f} ± {std_time:.4f} s"
+else:
+    text = "No MPPI_time data"
+print(text)  
+
+
 # === Layout adjustment ===
 plt.tight_layout(rect=[0, 0, 1, 0.97])  # leave space for main title
 

@@ -128,13 +128,13 @@ ax.grid(True)
 
 # ax = axs[3, 1]
 
-# if "MPPI_time" in df.columns:
-#     mean_time = df["MPPI_time"].mean()
-#     std_time  = df["MPPI_time"].std() 
-#     text = f"Average MPPI compute time:\n{mean_time:.4f} ± {std_time:.4f} s"
-#     print(text)  
-# else:
-#     text = "No MPPI_time data"
+if "MPPI_time" in df.columns:
+    mean_time = df["MPPI_time"].mean()
+    std_time  = df["MPPI_time"].std() 
+    text = f"Average MPPI compute time:\n{mean_time:.4f} ± {std_time:.4f} s"
+else:
+    text = "No MPPI_time data"
+print(text)  
 
 # ax.text(0.5, 0.5, text,
 #         ha='center', va='center',

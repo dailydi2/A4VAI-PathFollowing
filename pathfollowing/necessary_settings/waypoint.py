@@ -57,17 +57,17 @@ class Waypoint():
         #.. rectangle
         elif wp_type_selection == 2:
             # d       =   35
-            d       =   40
+            d       =   100
             wp0     =   5.
             h1      =   10.
             h2      =   10.
             self.WPs     =   np.array([ [0, 0, -h1],
-                                [-wp0, -wp0, -h1], [-wp0 - d, -wp0, -h2], [-wp0 - d, -wp0 + d, -h1], [-wp0, -wp0 + d, -h2], [-wp0, -wp0, -h1],
+                                [-wp0, wp0, -h1], [-wp0 - d, wp0, -h2], [-wp0 - d, wp0 + d, -h1], [-wp0, wp0 + d, -h2], [-wp0, wp0, -h1],
                                  [0, 0, -h1]])            
         #.. zigzag
         elif wp_type_selection == 3:
-            d1       =   60
-            d2       =   20
+            d1       =   80
+            d2       =   50
             wp0     =   5.
             h      =   10.
             # h2      =   10.
@@ -131,9 +131,9 @@ class Waypoint():
         elif wp_type_selection == 7:
             n_turns     = 2
             points_per_turn = 20
-            R           = 40.0
+            R           = 80.0
             h_start     = 10.0
-            h_step      = 20.0
+            h_step      = 30.0
             N           = n_turns * points_per_turn
             theta       = np.linspace(0, 2 * np.pi * n_turns, N)
             # WP shape: (N, 3)
