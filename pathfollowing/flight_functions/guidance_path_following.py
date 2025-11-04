@@ -83,14 +83,14 @@ def guidance_modules(QR_Guid_type, QR_WP_idx_passed, QR_WP_idx_heading, WP_WPs_s
         
         #.. a_x command
         Aqw_cmd              = np.zeros(3)
-        Aqw_cmd[0]           = MPPI_ctrl_input[0]    # guid_type 3? a_cmd_x ???? MPPI ????? ?? ????? ?? **-??240827-**
+        Aqw_cmd[0]           = MPPI_ctrl_input[0]
         
         # pursuit guidance law
         Rqti                 = VT_Ri - QR_Ri
         Rqtw                 = np.matmul(QR_cI_W,Rqti)
         err_azim, err_elev   = azim_elev_from_vec3(Rqtw)
-        Aqw_cmd[1]           = QR_guid_eta * QR_mag_Vi * m.sin(err_azim)       # GL ?? ??, a_cmd = eta*V*sin(lambda) **-??240827-**
-        Aqw_cmd[2]           = -2.0 * QR_mag_Vi * m.sin(err_elev)      # GL ?? ??, a_cmd = eta*V*sin(lambda) **-??240827-**
+        Aqw_cmd[1]           = QR_guid_eta * QR_mag_Vi * m.sin(err_azim) 
+        Aqw_cmd[2]           = -2.0 * QR_mag_Vi * m.sin(err_elev)
         # command coordinate change
         cW_I                 = np.transpose(QR_cI_W)
         Aqi_cmd              = np.matmul(cW_I, Aqw_cmd)

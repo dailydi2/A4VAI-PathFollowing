@@ -1,2 +1,5 @@
 *.pyc
 *.png
+*.csv
+
+pathfollowing/pf_loggging/pf_data

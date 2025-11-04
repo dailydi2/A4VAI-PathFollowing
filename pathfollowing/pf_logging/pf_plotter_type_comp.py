@@ -158,7 +158,7 @@ ax.legend()
 
 # ---- (6) MPPI result ----
 ax = ax_02_c
-for col, label in [("u_0", "Ax_cmd"), ("u_1", "guid_gain")]:
+for col, label in [("u_0", "Ax_cmd"), ("u_1", "guid_gain"), ("T_norm", "T_norm")]:
     if col in df.columns:
         ax.plot(t, df[col], label=label)
 ax.set_title("Control Input from MPPI")
@@ -166,6 +166,7 @@ ax.set_xlabel("time [s]")
 ax.set_ylabel("u")
 ax.legend()
 ax.grid(True)
+
 
 # === Layout adjustment ===
 plt.tight_layout(rect=[0, 0, 1, 0.97])  # leave space for main title
