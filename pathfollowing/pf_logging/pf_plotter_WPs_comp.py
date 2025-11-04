@@ -97,7 +97,7 @@ ax.grid(True)
 
 # Cross tracking error
 if "cross-tracking_err" in df.columns:
-    y_ct = df["cross-tracking_err"].replace(1e12, np.nan)
+    y_ct = df["cross-tracking_err"].replace(9999, np.nan)
     ax.plot(t, y_ct, label="cross-track err[m]", color='tab:blue')
 
 # Velocity error
